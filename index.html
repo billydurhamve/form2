@@ -23,14 +23,13 @@
 
     <form id="purchaseForm">
       <div class="form-group">
+        <input type="text" name="name" placeholder=" " required>
         <label>Full Name</label>
-        <input type="text" name="name" placeholder="John Doe" required>
       </div>
 
       <div class="form-group">
-        <label>Department</label>
         <select name="department" required>
-          <option value="">Select Department</option>
+          <option value="" disabled selected></option>
           <option>Marketing</option>
           <option>Finance & Accounting</option>
           <option>Human Resources</option>
@@ -38,61 +37,62 @@
           <option>Sales</option>
           <option>IT / Web Design</option>
         </select>
+        <label>Department</label>
       </div>
 
       <div class="form-group">
+        <input type="email" name="email" placeholder=" " required>
         <label>Email</label>
-        <input type="email" name="email" placeholder="you@example.com" required>
       </div>
 
       <div class="form-group">
+        <input type="text" name="vendor" placeholder=" " required>
         <label>Vendor Name</label>
-        <input type="text" name="vendor" placeholder="Vendor Ltd." required>
       </div>
 
       <div class="form-group">
+        <input type="text" name="product" placeholder=" " required>
         <label>Product(s) / Service(s)</label>
-        <input type="text" name="product" placeholder="Office chairs, software license" required>
       </div>
 
       <div class="form-group">
+        <input type="number" step="0.01" name="amount" placeholder=" " required>
         <label>Amount ($)</label>
-        <input type="number" step="0.01" name="amount" placeholder="0.00" required>
       </div>
 
       <div class="form-group">
-        <label>Date of Purchase</label>
         <input type="date" name="date" required>
+        <label>Date of Purchase</label>
       </div>
 
       <div class="form-group">
-        <label>Payment Type</label>
         <select name="payment" required>
-          <option value="">Select</option>
+          <option value="" disabled selected></option>
           <option>VE Bank Debit Card</option>
           <option>Trade / Exchange</option>
           <option>Purchase Order</option>
           <option>Other</option>
         </select>
+        <label>Payment Type</label>
       </div>
 
       <div class="form-group">
+        <input type="url" name="file" placeholder=" ">
         <label>Proof of Purchase (URL)</label>
-        <input type="url" name="file" placeholder="Paste screenshot or Drive link">
       </div>
 
       <div class="form-group">
-        <label>Made at least 5 VE purchases this period?</label>
         <select name="purchases5" required>
-          <option value="">Select</option>
+          <option value="" disabled selected></option>
           <option>Yes</option>
           <option>No</option>
         </select>
+        <label>Made at least 5 VE purchases this period?</label>
       </div>
 
       <div class="form-group">
+        <textarea name="notes" placeholder=" "></textarea>
         <label>Notes / Comments</label>
-        <textarea name="notes" placeholder="Optional"></textarea>
       </div>
 
       <button type="submit">Submit Purchase</button>
@@ -117,9 +117,9 @@
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
 
-      // Show success instantly
+      // Show success instantly with fade
       form.style.display = "none";
-      successScreen.classList.remove("hidden");
+      successScreen.classList.add("show");
 
       try {
         await fetch(WEB_APP_URL, {
@@ -134,7 +134,7 @@
     });
 
     function closeSuccess() {
-      successScreen.classList.add("hidden");
+      successScreen.classList.remove("show");
       form.reset();
       form.style.display = "block";
       window.scrollTo(0, 0);
