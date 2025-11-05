@@ -3,33 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employee Purchase Verification</title>
+  <title>Vendor Requests Form</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Floating Background Circles -->
-  <div class="background">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-  </div>
-
-  <!-- MAIN FORM -->
   <div class="container">
-    <h1>💼 Employee Purchase Verification</h1>
-    <p class="subtext">Securely record your VE purchases below.</p>
+    <h1>📦 Vendor Request Form</h1>
+    <p class="subtext">Submit new vendor requests. All data will be securely recorded.</p>
 
-    <form id="purchaseForm">
+    <form id="vendorForm">
       <div class="form-group">
-        <input type="text" name="name" placeholder=" " required>
         <label>Full Name</label>
+        <input type="text" name="name" placeholder="John Doe" required>
       </div>
 
       <div class="form-group">
+        <label>Department</label>
         <select name="department" required>
-          <option value="" disabled selected></option>
+          <option value="">Select Department</option>
           <option>Marketing</option>
           <option>Finance & Accounting</option>
           <option>Human Resources</option>
@@ -37,29 +29,82 @@
           <option>Sales</option>
           <option>IT / Web Design</option>
         </select>
-        <label>Department</label>
       </div>
 
       <div class="form-group">
-        <input type="email" name="email" placeholder=" " required>
         <label>Email</label>
+        <input type="email" name="email" placeholder="you@example.com" required>
       </div>
 
       <div class="form-group">
-        <input type="text" name="vendor" placeholder=" " required>
         <label>Vendor Name</label>
+        <input type="text" name="vendor" placeholder="Vendor Ltd." required>
       </div>
 
       <div class="form-group">
-        <input type="text" name="product" placeholder=" " required>
-        <label>Product(s) / Service(s)</label>
+        <label>Reason for Request</label>
+        <textarea name="reason" placeholder="Briefly explain why this vendor is needed" required></textarea>
       </div>
 
       <div class="form-group">
-        <input type="number" step="0.01" name="amount" placeholder=" " required>
-        <label>Amount ($)</label>
+        <label>Urgency</label>
+        <select name="urgency" required>
+          <option value="">Select urgency</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
       </div>
 
+      <button type="submit">Submit Request</button>
+    </form>
+  </div>
+
+  <div id="successScreen" class="hidden">
+    <h2>✅ Request Submitted!</h2>
+    <p>Thank you! Your vendor request has been recorded.</p>
+    <button onclick="closeSuccess()">Submit Another</button>
+  </div>
+
+  <script>
+    const form = document.getElementById("vendorForm");
+    const successScreen = document.getElementById("successScreen");
+
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyh-H0sa25olbSsZ_4V81S-XChPjfjlQcbfK9efKPpKMifaxEmvqU072QP85Re5LoY/exec";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        // Show success instantly
+        form.style.display = "none";
+        successScreen.classList.remove("hidden");
+
+        // Send data asynchronously
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" }
+        });
+      } catch (error) {
+        alert("Error submitting request. Please try again.");
+        console.error(error);
+        successScreen.classList.add("hidden");
+        form.style.display = "block";
+      }
+    });
+
+    function closeSuccess() {
+      successScreen.classList.add("hidden");
+      form.reset();
+      form.style.display = "block";
+    }
+  </script>
+</body>
+</html>
       <div class="form-group">
         <input type="date" name="date" required>
         <label>Date of Purchase</label>
